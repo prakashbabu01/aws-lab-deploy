@@ -27,19 +27,21 @@ pipeline
           }
         }
 
-        stage('Check Template/param files existance '){
-            steps {
-            if (fileExists("$templatePath/$templateName")) {
-                            echo "File $templateName found!"
-            }
-            if (fileExists("$paramPath/$instanceName.parm")) {
-                            echo "File $instanceName.parm found!"
-                        }
 
-       if ( fileExists("$paramPath/$instanceName.tags") ) {
-              echo "File $instanceName.tags found!"
-                                    }
+
+stage ('Check for existence of index.html') {
+
+    when {
+            expression {
+                return fileExists("${templatePath}${templateName}");
+            }
         }
+        steps {
+            sh ./Shell/paramFileExtractValues.sh
+        }
+}
+
+
 
 
 
@@ -60,4 +62,4 @@ pipeline
     //            }
     //        }
   }
-}
+  }
