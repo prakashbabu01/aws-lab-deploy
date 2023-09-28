@@ -37,7 +37,7 @@ stage ('Check for existence of index.html') {
             }
         }
         steps {
-            sh "./Shell/paramFileExtractValues.sh ${paramPath}/${instanceName}/${instanceName.param} ${paramPath}/${instanceName}/${instanceName.tags}"
+            sh "./Shell/paramFileExtractValues.sh ${paramPath}/${instanceName}/${instanceName.param}  ${paramPath}/${instanceName}/${instanceName.tags}"
         }
 }
 
