@@ -14,7 +14,7 @@ pipeline
         s3Path = "/cloudformation-templates/"
         templateName = "ec2-template.yaml"
         templatePath = "./cloudFormationTemplates/"
-        paramPath = "./paramFiles/"
+        paramPath = "./paramFiles"
         stackName = "cf-webserver-ec2"
         instanceName = "webserv-tomcat"
     }
@@ -37,7 +37,7 @@ stage ('Check for existence of index.html') {
             }
         }
         steps {
-            sh "./Shell/paramFileExtractValues.sh"
+            sh "./Shell/paramFileExtractValues.sh ${paramPath}/${instanceName}/${instanceName.param} ${paramPath}/${instanceName}/${instanceName.tags}"
         }
 }
 
