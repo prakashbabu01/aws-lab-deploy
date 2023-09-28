@@ -26,7 +26,6 @@ pipeline
                 sh 'ls -ltr ./cloudFormationTemplates/*'
             }
         }
-
         stage('Deploy to s3') {
                   steps {
                 withAWS(credentials: 'awscredsjenkins_awscreds', region: 'us-east-1') {
@@ -34,18 +33,10 @@ pipeline
                 }
               }
              }
-
-
     stage('cleanup code'){
                 steps {
                     sh 'rm -rf ./cloudFormationTemplates'
                 }
             }
-
-
-
-
-
-
   }
 }
