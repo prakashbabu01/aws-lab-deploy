@@ -1,9 +1,13 @@
 pipeline
 {
     agent any
-    tools {
 
-  }
+    tools {
+    	    maven "MAVEN3" //Specify tools to be used exacty as given in tools section of manage jenkins
+    	    jdk "OracleJDK8"
+    	}
+
+
 
     environment {
         s3BucketName = "prakash-terraform-app-states"
