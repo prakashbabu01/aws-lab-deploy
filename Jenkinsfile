@@ -11,10 +11,12 @@ pipeline
 
     environment {
         s3BucketName = "prakash-terraform-app-states"
-        templateName = ""
         s3Path = "/cloudformation-templates/"
-        fileName = "ec2-template.yaml"
-        filePath = "./cloudFormationTemplates/"
+        templateName = "ec2-template.yaml"
+        templatePath = "./cloudFormationTemplates/"
+        paramPath = "./paramFiles/"
+        stackName = "cf-webserver-ec2"
+        instanceName = "webserv-tomcat"
     }
 
     stages
@@ -25,22 +27,37 @@ pipeline
           }
         }
 
-        stage('Test'){
+        stage('Check Template/param files existance '){
             steps {
-                sh 'ls -ltr ./cloudFormationTemplates/*'
+            if (fileExists("$templatePath/$templateName")) {
+                            echo "File $templateName found!"
             }
+            if (fileExists("$paramPath/$instanceName.parm")) {
+                            echo "File $instanceName.parm found!"
+                        }
+
+       if ( fileExists("$paramPath/$instanceName.tags") ) {
+              echo "File $instanceName.tags found!"
+                                    }
         }
-        stage('Deploy to s3') {
-                  steps {
-                withAWS(credentials: 'awscredsjenkins_awscreds', region: 'us-east-1') {
-                  s3Upload(bucket: "$s3BucketName"+"$s3Path", sourceFile : "$filePath" + "$fileName"  , )
-                }
-              }
-             }
-    stage('cleanup code'){
-                steps {
-                    sh 'rm -rf ./cloudFormationTemplates'
-                }
-            }
+
+
+
+
+ //       stage('Deploy to s3') {
+ //                 steps {
+ //               withAWS(credentials: 'awscredsjenkins_awscreds', region: 'us-east-1') {
+ //                 s3Upload( bucket: "$s3BucketName", path: "$s3Path", file: "$filePath" + "$templateName"  )
+ //                 sh "aws cloudformation deploy --template-file "$filePath" + "$templateName" --stack-name $stackName --parameter-overrides Key1=Value1 Key2=Value2 --tags Key1=Value1 Key2=Value2"
+//
+//                }
+//             }
+//             }
+
+    //stage('cleanup code'){
+    //            steps {
+    //                sh 'rm -rf ./cloudFormationTemplates'
+    //            }
+    //        }
   }
 }
