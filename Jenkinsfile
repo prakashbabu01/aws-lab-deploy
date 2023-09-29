@@ -38,16 +38,16 @@ triggers {
         //stackName = "cf-webserver-ec2"
         //instanceName = "webserv-tomcat"
 
-        def paramProperty = readYaml file : 'jenkinsdeployment-properties.yaml'
 
-                s3BucketName = paramProperty.s3BucketName
-                s3Path = paramProperty.s3Path
-                templateName = paramProperty.templateName
-                templatePath = paramProperty.templatePath
-                paramPath = paramProperty.paramPath
-                paramPathFolder = paramProperty.paramPathFolder
-                stackName = paramProperty.stackName
-                instanceName = paramProperty.instanceName
+
+                s3BucketName = ""
+                s3Path = ""
+                templateName = ""
+                templatePath = ""
+                paramPath = ""
+                paramPathFolder = ""
+                stackName = ""
+                instanceName = ""
     }
 
 
@@ -55,7 +55,26 @@ triggers {
     stages
   {
 
+stage('init') {
+          steps{
 
+           script {
+
+           def paramProperty = readYaml file : 'jenkinsdeployment-properties.yaml'
+
+                           env.s3BucketName = paramProperty.s3BucketName
+                           env.s3Path = paramProperty.s3Path
+                           env.templateName = paramProperty.templateName
+                           env.templatePath = paramProperty.templatePath
+                           env.paramPath = paramProperty.paramPath
+                           env.paramPathFolder = paramProperty.paramPathFolder
+                           env.stackName = paramProperty.stackName
+                           env.instanceName = paramProperty.instanceName
+
+           }
+
+          }
+        }
 
 
         stage('Fetch code') {
@@ -82,7 +101,7 @@ def instanceFolderNamePosition = 1
 println(newParamFilesList)
 println("size of list is ")
 println(newParamFilesList.size())
-println( env.paramPath )
+println( env.paramPathFolder )
 for ( paramFile in  newParamFilesList) {
 if ( paramFile.contains(env.paramPathFolder) ) {
 println( paramFile.toString())
