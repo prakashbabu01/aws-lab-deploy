@@ -28,7 +28,7 @@ triggers {
     )
   }
 
-    environment {
+  //  environment {
         //s3BucketName = "prakash-terraform-app-states"
         //s3Path = "/cloudformation-templates/"
         //templateName = "ec2-template.yaml"
@@ -40,15 +40,15 @@ triggers {
 
 
 
-                s3BucketName = ""
-                s3Path = ""
-                templateName = ""
-                templatePath = ""
-                paramPath = ""
-                paramPathFolder = ""
-                stackName = ""
-                instanceName = ""
-    }
+             //   s3BucketName = "NULL"
+          //      s3Path = "NULL"
+         //       templateName = "NULL"
+         //       templatePath = "NULL"
+        //        paramPath = "NULL"
+        //        paramPathFolder = "NULL"
+        //        stackName = "NULL"
+         //       instanceName = "NULL"
+  //  }
 
 
 
@@ -60,21 +60,26 @@ stage('init') {
 
            script {
 
-           def paramProperty = readYaml file : 'jenkinsdeployment-properties.yaml'
+           def paramProperty = readYaml file: './jenkinsdeployment-properties.yaml'
 
-                           env.s3BucketName = paramProperty.s3BucketName
-                           env.s3Path = paramProperty.s3Path
-                           env.templateName = paramProperty.templateName
-                           env.templatePath = paramProperty.templatePath
-                           env.paramPath = paramProperty.paramPath
-                           env.paramPathFolder = paramProperty.paramPathFolder
-                           env.stackName = paramProperty.stackName
-                           env.instanceName = paramProperty.instanceName
+                        def s3BucketName = paramProperty.s3BucketName1
+                          def s3Path = paramProperty.s3Path1
+                         def s3Path = paramProperty.templateName1
+                          def templatePath = paramProperty.templatePath1
+                          def paramPath = paramProperty.paramPath1
+                          def paramPathFolder = paramProperty.paramPathFolder1
+                          def stackName = paramProperty.stackName1
+                          def instanceName = paramProperty.instanceName1
+
 
            }
 
+
+
+
           }
         }
+
 
 
         stage('Fetch code') {
@@ -92,7 +97,16 @@ stage('read changes from git and extract parameter files') {
         //sh "echo $modified_files"
         sh " echo $added_files "
 
+
           script {
+
+ println("values of the variables from param file are")
+
+                           println(env.s3BucketName)
+                           println(env.s3Path)
+
+println(s3BucketName)
+                           println(s3Path)
 
 def str_added_files = env.added_files
 def newParamFilesList = str_added_files[1..-2].split(',')
