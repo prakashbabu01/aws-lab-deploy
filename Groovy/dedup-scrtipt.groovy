@@ -1,4 +1,4 @@
-def str=(["paramFiles/db-mysql/db-rds.param","paramFiles/db-mysql/db-mysql.tags"]).toString()
+def str=(["paramFiles/db-mysql/mem-cache.param","paramFiles/db-mysql/mem-cache.tags"]).toString()
 def newParamFilesList = str[1..-2].split(',')
 def instancesList = []
 def instanceFolderNamePosition = 1
