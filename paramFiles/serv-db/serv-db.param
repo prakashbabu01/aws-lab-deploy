@@ -1,4 +1,0 @@
-InstanceType=t3.small
-KeyName=kops-dev
-LatestAmiId=ami-053b0d53c279acc90
-SSHLocation=0.0.0.0/0
