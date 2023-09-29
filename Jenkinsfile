@@ -7,6 +7,7 @@ pipeline
             jdk 'OracleJDK8'
     }
 
+//below trigger need to be created with all below parameters. keep key and value below inline with values provided in the trigger and token value.
     triggers {
         GenericTrigger(
      genericVariables: [
@@ -49,6 +50,7 @@ pipeline
                     env.paramPathFolder = paramProperty.paramPathFolder1
                     env.stackName = paramProperty.stackName1
                     env.instanceName = paramProperty.instanceName1
+                    env.instanceFolderNamePosition = paramProperty.instanceFolderNamePosition1
                 // println(env.s3BucketName)
                 //                            println(env.s3Path)
                 }
@@ -61,6 +63,11 @@ pipeline
                 //sh "echo $modified_files"
                 sh " echo $added_files "
 
+//below is the groovy code which can be included for any programming needed in the jenkins pipeline and needs to be included as part of script {}.
+//important to note all groovy function will work except ones like foreach where collect and iteration is needed. normal looping works.
+//groovy code is part of this project seperatly and can be compiled along with intellij to play around
+
+
                 script {
  //println("values of the variables from param file are")
 
@@ -68,9 +75,11 @@ pipeline
                         //   println(env.s3Path)
 
                     def str_added_files = env.added_files
+//file list is not implicitly converted to list data type to iterate. hence trimming off [] on both ends and then splitting it with "," to create list
                     def newParamFilesList = str_added_files[1..-2].split(',')
                     def instancesList = []
-                    def instanceFolderNamePosition = 1
+                    def instanceFolderNamePosition = env.instanceFolderNamePosition
+// we are considering the folder name inside paramFiles directory with above postion to identify instance name.
                     //println(newParamFilesList)
                     //println("size of list is ")
                     //println(newParamFilesList.size())
