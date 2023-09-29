@@ -48,38 +48,14 @@ triggers {
         //        paramPathFolder = "NULL"
         //        stackName = "NULL"
          //       instanceName = "NULL"
-  //  }
 
 
 
-    stages
-  {
-
-stage('init') {
-          steps{
-
-           script {
-
-           def paramProperty = readYaml file: './jenkinsdeployment-properties.yaml'
-
-                        def s3BucketName = paramProperty.s3BucketName1
-                          def s3Path = paramProperty.s3Path1
-                         def s3Path = paramProperty.templateName1
-                          def templatePath = paramProperty.templatePath1
-                          def paramPath = paramProperty.paramPath1
-                          def paramPathFolder = paramProperty.paramPathFolder1
-                          def stackName = paramProperty.stackName1
-                          def instanceName = paramProperty.instanceName1
-
-
-           }
+//   }
 
 
 
-
-          }
-        }
-
+    stages(){
 
 
         stage('Fetch code') {
@@ -88,6 +64,28 @@ stage('init') {
           }
         }
 
+stage('set environment variables') {
+steps{
+
+script {
+
+                    def paramProperty = readYaml file: './jenkinsdeployment-properties.yaml'
+
+                                  env.s3BucketName = paramProperty.s3BucketName1
+                                   env.s3Path = paramProperty.s3Path1
+                                   env.templatePath = paramProperty.templatePath1
+                                   env.templateName = paramProperty.templateName1
+                                   env.paramPath = paramProperty.paramPath1
+                                   env.paramPathFolder = paramProperty.paramPathFolder1
+                                   env.stackName = paramProperty.stackName1
+                                   env.instanceName = paramProperty.instanceName1
+         println(env.s3BucketName)
+                                    println(env.s3Path)
+
+                    }
+}
+
+}
 
 
 stage('read changes from git and extract parameter files') {
@@ -104,9 +102,6 @@ stage('read changes from git and extract parameter files') {
 
                            println(env.s3BucketName)
                            println(env.s3Path)
-
-println(s3BucketName)
-                           println(s3Path)
 
 def str_added_files = env.added_files
 def newParamFilesList = str_added_files[1..-2].split(',')
