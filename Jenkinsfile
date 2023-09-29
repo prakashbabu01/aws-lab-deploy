@@ -29,6 +29,10 @@ pipeline
 
 
 
+
+
+
+
 stage ('Check for existence of index.html') {
 
     when {
