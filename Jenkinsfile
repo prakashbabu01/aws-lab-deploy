@@ -3,7 +3,7 @@ pipeline
     agent any
 
     tools {
-    	    maven "MAVEN3" //Specify tools to be used exacty as given in tools section of manage jenkins
+    	    maven "MAVEN3" //Specify tools to be used exactly as given in tools section of manage jenkins
     	    jdk "OracleJDK8"
     	}
 
