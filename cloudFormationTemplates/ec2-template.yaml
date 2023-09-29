@@ -81,9 +81,6 @@ Resources:
         - !Ref InstanceSecurityGroup
       KeyName: !Ref KeyName
       ImageId: !Ref LatestAmiId
-      Tags:
-        - Key: 'Name'
-          Value: 'mycfinstance'
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
