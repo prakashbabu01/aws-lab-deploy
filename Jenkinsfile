@@ -19,8 +19,38 @@ pipeline
         instanceName = "webserv-tomcat"
     }
 
+triggers {
+    GenericTrigger(
+     genericVariables: [
+      [key: 'ref', value: '$.ref']
+     ],
+
+     causeString: 'Triggered on $ref',
+
+     token: 'abc123',
+     tokenCredentialId: '',
+
+     printContributedVariables: true,
+     printPostContent: true,
+
+     silentResponse: false,
+
+     shouldNotFlatten: false,
+
+     regexpFilterText: '$ref',
+     regexpFilterExpression: 'refs/heads/' + BRANCH_NAME
+    )
+  }
+
     stages
   {
+
+  stage('print ref') {
+            steps{
+                sh '$ref'
+            }
+          }
+
         stage('Fetch code') {
           steps{
               git branch: 'main', url:'https://github.com/prakashbabu01/aws-lab-deploy.git'
@@ -60,14 +90,14 @@ stage ('deploy ec2 with cf stack') {
 
     }
 
-        steps {
-             withAWS(credentials: 'awscredsjenkins_awscreds', region: 'us-east-1') {
-                 sh 'echo "value of para args is "$para_args'
-                 sh 'echo "value of para args is "$para_tag_args'
-            sh 'aws cloudformation deploy  --template-file ${templatePath}${templateName} --stack-name ${stackName} --parameter-overrides $para_args --tags $para_tag_args'
-
-             }
-        }
+//        steps {
+//             withAWS(credentials: 'awscredsjenkins_awscreds', region: 'us-east-1') {
+//                 sh 'echo "value of para args is "$para_args'
+//                 sh 'echo "value of para args is "$para_tag_args'
+//            sh 'aws cloudformation deploy  --template-file ${templatePath}${templateName} --stack-name ${stackName} --parameter-overrides $para_args --tags $para_tag_args'
+//
+//             }
+//        }
 
 
 }
