@@ -5,9 +5,14 @@ def instanceFolderNamePosition = 1
 println(newParamFilesList)
 println("size of list is ")
 println(newParamFilesList.size())
+
 for ( paramFile in  newParamFilesList) {
+
+    if ( paramFile.contains("paramFiles/") ) {
+println( paramFile.toString())
     paramFileTokens = paramFile.tokenize('/')
-    instancesList.add( paramFileTokens.get(instanceFolderNamePosition) )
+    instancesList.add(paramFileTokens.get(instanceFolderNamePosition))
+}
 }
 instanceListUnique=instancesList.unique()
 //instanceListUnique.forEach {print(it)}

@@ -29,13 +29,25 @@ triggers {
   }
 
     environment {
-        s3BucketName = "prakash-terraform-app-states"
-        s3Path = "/cloudformation-templates/"
-        templateName = "ec2-template.yaml"
-        templatePath = "./cloudFormationTemplates/"
-        paramPath = "./paramFiles"
-        stackName = "cf-webserver-ec2"
-        instanceName = "webserv-tomcat"
+        //s3BucketName = "prakash-terraform-app-states"
+        //s3Path = "/cloudformation-templates/"
+        //templateName = "ec2-template.yaml"
+        //templatePath = "./cloudFormationTemplates/"
+        //paramPath = "./paramFiles"
+        //paramPathFolder = "paramFiles"
+        //stackName = "cf-webserver-ec2"
+        //instanceName = "webserv-tomcat"
+
+        def paramProperty = readYaml file : 'jenkinsdeployment-properties.yaml'
+
+                s3BucketName = paramProperty.s3BucketName
+                s3Path = paramProperty.s3Path
+                templateName = paramProperty.templateName
+                templatePath = paramProperty.templatePath
+                paramPath = paramProperty.paramPath
+                paramPathFolder = paramProperty.paramPathFolder
+                stackName = paramProperty.stackName
+                instanceName = paramProperty.instanceName
     }
 
 
@@ -70,9 +82,13 @@ def instanceFolderNamePosition = 1
 println(newParamFilesList)
 println("size of list is ")
 println(newParamFilesList.size())
+println( env.paramPath )
 for ( paramFile in  newParamFilesList) {
+if ( paramFile.contains(env.paramPathFolder) ) {
+println( paramFile.toString())
     paramFileTokens = paramFile.tokenize('/')
     instancesList.add( paramFileTokens.get(instanceFolderNamePosition) )
+    }
 }
 instanceListUnique=instancesList.unique()
       }
