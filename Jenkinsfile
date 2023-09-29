@@ -7,7 +7,26 @@ pipeline
     	    jdk "OracleJDK8"
     	}
 
+triggers {
+    GenericTrigger(
+     genericVariables: [
+      [key: 'added_files', value: '$.head_commit.added']
+     ],
 
+    causeString: 'Triggered on $added_files',
+
+     token: 'abc123',
+     tokenCredentialId: '',
+
+     printContributedVariables: true,
+     printPostContent: true,
+
+     silentResponse: false,
+
+     shouldNotFlatten: false
+
+    )
+  }
 
     environment {
         s3BucketName = "prakash-terraform-app-states"
@@ -19,38 +38,12 @@ pipeline
         instanceName = "webserv-tomcat"
     }
 
-triggers {
-    githubPush(
-     genericVariables: [
-      [key: 'ref', value: '$.ref']
-     ],
 
-     causeString: 'Triggered on $ref',
-
-     token: 'abc123',
-     tokenCredentialId: '',
-
-     printContributedVariables: true,
-     printPostContent: true,
-
-
-     silentResponse: false,
-
-     shouldNotFlatten: false,
-
-     regexpFilterText: '$ref',
-     regexpFilterExpression: 'refs/heads/' + BRANCH_NAME
-    )
-  }
 
     stages
   {
 
-  stage('print ref') {
-            steps{
-                sh '$ref'
-            }
-          }
+
 
 
         stage('Fetch code') {
@@ -73,6 +66,30 @@ stage ('Check for existence of index.html') {
         }
 }
 
+stage('Some step') {
+      steps {
+
+        sh " echo added and modified files are "
+        //sh "echo $modified_files"
+        sh " echo $added_files "
+
+          script {
+
+def str_added_files = env.added_files
+def newParamFilesList = str_added_files[1..-2].split(',')
+def instancesList = []
+def instanceFolderNamePosition = 1
+println(newParamFilesList)
+println("size of list is ")
+println(newParamFilesList.size())
+for ( paramFile in  newParamFilesList) {
+    paramFileTokens = paramFile.tokenize('/')
+    instancesList.add( paramFileTokens.get(instanceFolderNamePosition) )
+}
+instanceListUnique=instancesList.unique()
+      }
+      }
+    }
 
 
 
