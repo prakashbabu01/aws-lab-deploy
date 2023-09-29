@@ -72,14 +72,7 @@ stage ('Check for existence of index.html') {
         }
 }
 
-stage ('print payload') {
 
-
-        steps {
-            sh "echo $payload"
-
-        }
-}
 
 
 stage ('deploy ec2 with cf stack') {
