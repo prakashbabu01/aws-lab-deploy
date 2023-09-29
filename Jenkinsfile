@@ -27,12 +27,6 @@ pipeline
           }
         }
 
-
-
-
-
-
-
 stage ('Check for existence of index.html') {
 
     when {
@@ -47,7 +41,24 @@ stage ('Check for existence of index.html') {
         }
 }
 
+stage ('deploy ec2 with cf stack') {
 
+    environment {
+
+        para_args = readFile("param.tmp")
+        para_tag_args = readFile("param-tags.tmp")
+
+    }
+
+        steps {
+             withAWS(credentials: 'awscredsjenkins_awscreds', region: 'us-east-1') {
+                 sh 'echo "value of para args is "$para_args'
+                 sh 'echo "value of para args is "$para_tag_args'
+            sh 'aws cloudformation deploy  --template-file ${templatePath}${templateName} --stack-name ${stackName} --parameter-overrides $para_args --tags $para_tag_args'
+
+             }
+        }
+}
 
 
 
