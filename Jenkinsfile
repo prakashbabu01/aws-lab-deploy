@@ -15,7 +15,7 @@ triggers {
 
     causeString: 'Triggered on $added_files',
 
-     token: 'abc123',
+     token: 'abc1234',
      tokenCredentialId: '',
 
      printContributedVariables: true,
@@ -52,21 +52,9 @@ triggers {
           }
         }
 
-stage ('Check for existence of index.html') {
 
-    when {
-            expression {
-                return fileExists("${templatePath}${templateName}");
-            }
-        }
-        steps {
-            sh "sh ./Shell/paramFileExtractValues.sh ${paramPath}/${instanceName}/${instanceName}.param  ${paramPath}/${instanceName}/${instanceName}.tags"
-            echo "${paramPath}/${instanceName}/${instanceName}.tags"
-            echo "${paramPath}/${instanceName}/${instanceName}.param"
-        }
-}
 
-stage('Some step') {
+stage('read changes from git and extract parameter files') {
       steps {
 
         sh " echo added and modified files are "
@@ -91,16 +79,35 @@ instanceListUnique=instancesList.unique()
       }
     }
 
+stage ('Check for existence of index.html') {
 
+    when {
+            expression {
+                return fileExists("${templatePath}${templateName}");
+            }
+        }
+        steps {
 
-stage ('deploy ec2 with cf stack') {
+        script {
 
-    environment {
+        env.instanceName=instanceListUnique.get(0)
 
-        para_args = readFile("param.tmp")
-        para_tag_args = readFile("param-tags.tmp")
+        }
 
-    }
+            sh "sh ./Shell/paramFileExtractValues.sh ${paramPath}/${instanceName}/${instanceName}.param  ${paramPath}/${instanceName}/${instanceName}.tags"
+            echo "${paramPath}/${instanceName}/${instanceName}.tags"
+            echo "${paramPath}/${instanceName}/${instanceName}.param"
+        }
+}
+
+//stage ('deploy ec2 with cf stack') {
+
+//    environment {
+
+//        para_args = readFile("param.tmp")
+//        para_tag_args = readFile("param-tags.tmp")
+
+//    }
 
 //        steps {
 //             withAWS(credentials: 'awscredsjenkins_awscreds', region: 'us-east-1') {
@@ -112,7 +119,7 @@ stage ('deploy ec2 with cf stack') {
 //        }
 
 
-}
+//}
 
 
 

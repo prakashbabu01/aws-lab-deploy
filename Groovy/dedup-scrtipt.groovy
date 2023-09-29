@@ -11,4 +11,5 @@ for ( paramFile in  newParamFilesList) {
 }
 instanceListUnique=instancesList.unique()
 //instanceListUnique.forEach {print(it)}
+println(instanceListUnique.get(0))
 
