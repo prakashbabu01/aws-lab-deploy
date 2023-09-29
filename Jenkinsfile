@@ -63,8 +63,8 @@ stage ('deploy ec2 with cf stack') {
 
 
 
- //       stage('Deploy to s3') {
- //                 steps {
+//       stage('Deploy to s3') {
+//                  steps {
  //               withAWS(credentials: 'awscredsjenkins_awscreds', region: 'us-east-1') {
  //                 s3Upload( bucket: "$s3BucketName", path: "$s3Path", file: "$filePath" + "$templateName"  )
  //                 sh "aws cloudformation deploy --template-file "$filePath" + "$templateName" --stack-name $stackName --parameter-overrides Key1=Value1 Key2=Value2 --tags Key1=Value1 Key2=Value2"
@@ -73,10 +73,10 @@ stage ('deploy ec2 with cf stack') {
 //             }
 //             }
 
-    //stage('cleanup code'){
-    //            steps {
-    //                sh 'rm -rf ./cloudFormationTemplates'
-    //            }
-    //        }
+    stage('cleanup code'){
+                steps {
+                    sh 'rm -rf ./cloudFormationTemplates'
+                }
+            }
   }
   }
