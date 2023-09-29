@@ -20,7 +20,7 @@ pipeline
     }
 
 triggers {
-    GenericTrigger(
+    githubPush(
      genericVariables: [
       [key: 'ref', value: '$.ref']
      ],
@@ -32,6 +32,7 @@ triggers {
 
      printContributedVariables: true,
      printPostContent: true,
+
 
      silentResponse: false,
 
