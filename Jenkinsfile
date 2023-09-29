@@ -28,30 +28,7 @@ triggers {
     )
   }
 
-  //  environment {
-        //s3BucketName = "prakash-terraform-app-states"
-        //s3Path = "/cloudformation-templates/"
-        //templateName = "ec2-template.yaml"
-        //templatePath = "./cloudFormationTemplates/"
-        //paramPath = "./paramFiles"
-        //paramPathFolder = "paramFiles"
-        //stackName = "cf-webserver-ec2"
-        //instanceName = "webserv-tomcat"
 
-
-
-             //   s3BucketName = "NULL"
-          //      s3Path = "NULL"
-         //       templateName = "NULL"
-         //       templatePath = "NULL"
-        //        paramPath = "NULL"
-        //        paramPathFolder = "NULL"
-        //        stackName = "NULL"
-         //       instanceName = "NULL"
-
-
-
-//   }
 
 
 
@@ -79,8 +56,8 @@ script {
                                    env.paramPathFolder = paramProperty.paramPathFolder1
                                    env.stackName = paramProperty.stackName1
                                    env.instanceName = paramProperty.instanceName1
-         println(env.s3BucketName)
-                                    println(env.s3Path)
+        // println(env.s3BucketName)
+        //                            println(env.s3Path)
 
                     }
 }
@@ -98,22 +75,22 @@ stage('read changes from git and extract parameter files') {
 
           script {
 
- println("values of the variables from param file are")
+ //println("values of the variables from param file are")
 
-                           println(env.s3BucketName)
-                           println(env.s3Path)
+                        //   println(env.s3BucketName)
+                        //   println(env.s3Path)
 
 def str_added_files = env.added_files
 def newParamFilesList = str_added_files[1..-2].split(',')
 def instancesList = []
 def instanceFolderNamePosition = 1
-println(newParamFilesList)
-println("size of list is ")
-println(newParamFilesList.size())
-println( env.paramPathFolder )
+//println(newParamFilesList)
+//println("size of list is ")
+//println(newParamFilesList.size())
+//println( env.paramPathFolder )
 for ( paramFile in  newParamFilesList) {
 if ( paramFile.contains(env.paramPathFolder) ) {
-println( paramFile.toString())
+//println( paramFile.toString())
     paramFileTokens = paramFile.tokenize('/')
     instancesList.add( paramFileTokens.get(instanceFolderNamePosition) )
     }
@@ -144,26 +121,26 @@ stage ('Check for existence of index.html') {
         }
 }
 
-//stage ('deploy ec2 with cf stack') {
+stage ('deploy ec2 with cf stack') {
 
-//    environment {
+    environment {
 
-//        para_args = readFile("param.tmp")
-//        para_tag_args = readFile("param-tags.tmp")
+        para_args = readFile("param.tmp")
+        para_tag_args = readFile("param-tags.tmp")
 
-//    }
+    }
 
-//        steps {
-//             withAWS(credentials: 'awscredsjenkins_awscreds', region: 'us-east-1') {
-//                 sh 'echo "value of para args is "$para_args'
-//                 sh 'echo "value of para args is "$para_tag_args'
-//            sh 'aws cloudformation deploy  --template-file ${templatePath}${templateName} --stack-name ${stackName} --parameter-overrides $para_args --tags $para_tag_args'
-//
-//             }
-//        }
+        steps {
+             withAWS(credentials: 'awscredsjenkins_awscreds', region: 'us-east-1') {
+                 sh 'echo "value of para args is "$para_args'
+                 sh 'echo "value of para args is "$para_tag_args'
+            sh 'aws cloudformation deploy  --template-file ${templatePath}${templateName} --stack-name ${stackName} --parameter-overrides $para_args --tags $para_tag_args'
+
+             }
+        }
 
 
-//}
+}
 
 
 
