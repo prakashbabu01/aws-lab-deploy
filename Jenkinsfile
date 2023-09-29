@@ -51,6 +51,7 @@ triggers {
             }
           }
 
+
         stage('Fetch code') {
           steps{
               git branch: 'main', url:'https://github.com/prakashbabu01/aws-lab-deploy.git'
